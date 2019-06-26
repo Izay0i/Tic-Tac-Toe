@@ -145,6 +145,8 @@ public class Main {
                 break;
             }
         }
+        
+        printBoard(board);
     }
 
     public static void main(String[] args) {
