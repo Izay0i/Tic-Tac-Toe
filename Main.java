@@ -8,8 +8,8 @@ public class Main {
     //Random generator
     protected static Random random = new Random();
 
-    private static int[][] setBoardSize(int rows, int columns) {
-        return new int[rows][columns];
+    private static int[][] setBoardSize(int size) {
+        return new int[size][size];
     }
 
     //checks if the current square is empty
@@ -153,7 +153,7 @@ public class Main {
         //X - 1
         //O - 2
         System.out.println("Welcome to Tic tac toe!");
-        gameLoop(playerInfo(), botInfo(), setBoardSize(3,3));
+        gameLoop(playerInfo(), botInfo(), setBoardSize(3));
         System.out.println("Thanks for playing!");
         scanner.close();
     }
