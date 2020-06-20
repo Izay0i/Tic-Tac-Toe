@@ -170,7 +170,7 @@ public class Main {
             }
 
             if (isFull(board)) {
-                System.out.println("The game ends with a draw!");
+                System.out.println("The game ends in a draw!");
                 break;
             }
 
