@@ -7,8 +7,10 @@ public class Main {
 
     //Random generator
     protected static Random random = new Random();
+    private static int range = 3;
 
     private static int[][] setBoardSize(int size) {
+        range = size;
         return new int[size][size];
     }
 
@@ -57,8 +59,8 @@ public class Main {
 
     private static int[][] botMove(int board[][]) {
         while (true) {
-            int row = random.nextInt(3);
-            int column = random.nextInt(3);
+            int row = random.nextInt(range);
+            int column = random.nextInt(range);
 
             if (isEmpty(board, row, column)) {
                 board[row][column] = 2;
@@ -70,7 +72,7 @@ public class Main {
     }
 
     private static void printBoard(int board[][]) {
-        System.out.println("-------");
+        System.out.println();
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board.length; j++) {
@@ -82,89 +84,71 @@ public class Main {
                     System.out.print("| ");
             }
             System.out.println("|");
-            System.out.println("-------");
+            System.out.println();
         }
     }
 
     private static boolean checkEndCondition(int board[][], int signature, String name) {
-        //I stg this is painful
-        int sigCount = 0;       
+       int sigCount = 0;
 
-        //checks columns
-        for (int column = 0; column < board.length; ++column) {
-            for (int row = 0; row < board.length; ++row) {
-                if (board[row][column] == signature) {
-                    ++sigCount;
-                }
-            }
-
-            if (sigCount == board.length) {
-                return true;
-            }
-
-            sigCount = 0;
-        }
-
-        // if (board[0][0] == signature && board[0][1] == signature && board[0][2] == signature)
-        //     return true;
-        // if (board[1][0] == signature && board[1][1] == signature && board[1][2] == signature)
-        //     return true;
-        // if (board[2][0] == signature && board[2][1] == signature && board[2][2] == signature)
-        //     return true;
-
-        //checks rows
-        for (int row = 0; row < board.length; ++row) {
+       //check rows
+       for (int row = 0; row < board.length; ++row) {
             for (int column = 0; column < board.length; ++column) {
                 if (board[row][column] == signature) {
                     ++sigCount;
                 }
-            }
 
-            if (sigCount == board.length) {
-                return true;
-            }
-
-            sigCount = 0; 
-        }
-
-        // if (board[0][0] == signature && board[1][0] == signature && board[2][0] == signature)
-        //     return true;
-        // if (board[0][1] == signature && board[1][1] == signature && board[2][1] == signature)
-        //     return true;
-        // if (board[0][2] == signature && board[1][2] == signature && board[2][2] == signature)
-        //     return true;
-
-        //checks diagonals
-        for (int rowCol = 0; rowCol < board.length; ++rowCol) {
-            if (board[rowCol][rowCol] == signature) {
-                ++sigCount;
-            }
-        }
-
-        if (sigCount == board.length) {
-            return true;
-        }
-
-        sigCount = 0;
-
-        for (int row = 0; row < board.length; ++row) {
-            for (int column = board.length - 1; column >= 0; --column) {
-                if (board[row][column] == signature) {
-                    ++sigCount;
+                if (sigCount == board.length) {
+                    return true;
                 }
             }
 
-            if (sigCount == board.length) {
-                return true;
-            }  
-        }
-        
-        // if (board[0][0] == signature && board[1][1] == signature && board[2][2] == signature)
-        //     return true;
-        // if (board[0][2] == signature && board[1][1] == signature && board[2][0] == signature)
-        //     return true;
+            sigCount = 0;            
+       }
 
-        return false;
+       //check columns
+        for (int row = 0; row < board.length; ++row) {
+            for (int column = 0; column < board.length; ++column) {
+                if (board[column][row] == signature) {
+                    ++sigCount;
+                }
+
+                if (sigCount == board.length) {
+                    return true;
+                }
+            }
+
+            sigCount = 0;
+       }       
+
+       //check diagonal left
+       for (int pos = 0; pos < board.length; ++pos) {
+            if (board[pos][pos] == signature) {
+                ++sigCount;
+            }
+       }
+
+
+       if (sigCount == board.length) {
+            return true;
+       }
+
+       sigCount = 0;
+
+       //check diagonal right
+       for (int row = 0, column = board.length - 1; row < board.length; ++row, --column) {
+            if (board[row][column] == signature) {
+                ++sigCount;
+            }
+       }
+
+        if (sigCount == board.length) {
+            return true;
+       }
+
+       sigCount = 0;       
+
+       return false;
     }
 
     private static void announce(String name) {
@@ -186,7 +170,7 @@ public class Main {
             }
 
             if (isFull(board)) {
-                System.out.println("The game ends in a draw!");
+                System.out.println("The game ends with a draw!");
                 break;
             }
 
@@ -206,7 +190,9 @@ public class Main {
         //X - 1
         //O - 2
         System.out.println("Welcome to Tic tac toe!");
-        gameLoop(playerInfo(), botInfo(), setBoardSize(3));
+        System.out.print("Choose your board size: ");
+        int size = scanner.nextInt();
+        gameLoop(playerInfo(), botInfo(), setBoardSize(size));
         System.out.println("Thanks for playing!");
         scanner.close();
     }
